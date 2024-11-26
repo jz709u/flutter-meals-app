@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meals/screens/screens.dart';
 
 class DrawerItem extends StatelessWidget {
   const DrawerItem({super.key, required this.onSelectScreen});
@@ -71,10 +72,4 @@ class DrawerItem extends StatelessWidget {
       ],
     ));
   }
-}
-
-
-enum Screens {
-  meal,
-  filter
 }

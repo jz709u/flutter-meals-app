@@ -6,23 +6,31 @@ class MealItemTrait extends StatelessWidget {
   final String label;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 17,
-          color: Colors.white,
-        ),
-        const SizedBox(
-          width: 6,
-        ),
-        Text(
-          label,
-          style: TextStyle(
+    return Flexible(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 17,
             color: Colors.white,
           ),
-        ),
-      ],
+          const SizedBox(
+            width: 6,
+          ),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
