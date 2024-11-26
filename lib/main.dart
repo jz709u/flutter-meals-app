@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
+import 'package:meals/screens/tabs_screen.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -25,7 +26,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: theme,
-      home: CategoriesScreen(), //CategoriesScreen()// todo
+      home: TabsScreen(),
     );
   }
 }

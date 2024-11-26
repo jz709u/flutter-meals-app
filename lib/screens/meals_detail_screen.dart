@@ -3,8 +3,9 @@ import 'package:meals/models/meal.dart';
 import 'package:meals/widgets/meal_header_item.dart';
 
 class MealsDetailScreen extends StatelessWidget {
-  const MealsDetailScreen({super.key, required this.meal});
+  const MealsDetailScreen({super.key, required this.meal, required this.onToggleFavorite});
   final Meal meal;
+  final void Function(Meal meal) onToggleFavorite;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,6 +15,9 @@ class MealsDetailScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         forceMaterialTransparency: true,
+        actions: [
+          IconButton(onPressed: () { onToggleFavorite(meal); }, icon: Icon(Icons.star))
+        ],
       ),
       extendBodyBehindAppBar: true,
       body: ListView(
