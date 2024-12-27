@@ -5,6 +5,9 @@ import 'package:meals/data/dummy_data.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/screens/tabs_screen.dart';
+import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -16,14 +19,18 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(const App());
+  return runApp(
+    ProviderScope(
+      child: const App(),
+    ),
+  );
 }
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       theme: theme,
       home: TabsScreen(),

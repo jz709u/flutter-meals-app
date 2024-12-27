@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/data/dummy_data.dart';
 import 'package:meals/models/meal.dart';
+import 'package:meals/providers/favorites_provider.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/drawer_item.dart';
 import 'package:meals/screens/screens.dart';
+import 'package:meals/providers/meals_provider.dart';
 
 const kInitialFilters = {
   Filters.glutenFree: false,
@@ -14,29 +17,16 @@ const kInitialFilters = {
   Filters.vegetarian: false,
 };
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   @override
-  State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
-  final List<Meal> _favoriteMeals = [];
   Map<Filters, bool> selectedFilters = kInitialFilters;
-
-  void _toggleMealFavoriteStatus(Meal meal) {
-    setState(() {
-      if (!_favoriteMeals.contains(meal)) {
-        _favoriteMeals.add(meal);
-        _showInfoMessage('Favorited meal ${meal.title}');
-      } else {
-        _favoriteMeals.remove(meal);
-        _showInfoMessage('Removed Favorite Meal ${meal.title}');
-      }
-    });
-  }
 
   void _showInfoMessage(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -76,7 +66,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = dummyMeals.where((meal) {
+    final meals = ref.watch(mealsProvider);
+    final availableMeals = meals.where((meal) {
       if (selectedFilters[Filters.glutenFree]! && !meal.isGlutenFree) {
         return false;
       } else if (selectedFilters[Filters.lactoseFree]! && !meal.isLactoseFree) {
@@ -89,15 +80,32 @@ class _TabsScreenState extends State<TabsScreen> {
         return true;
       }
     }).toList();
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+
+    ref.listen(favoriteMealsProvider, (prev, next) {
+      final prevL = prev ?? [];
+      final prevLength = prevL.length;
+      final nextLength = next.length;
+      if (prevLength > nextLength) {
+        final meal = prevL.firstWhere((meal) {
+          return !next.contains(meal);
+        });
+        _showInfoMessage("meal was unfavorited: ${meal.title}");
+      } else if (prevLength < nextLength) {
+        final meal = next.firstWhere((meal) {
+          return !prevL.contains(meal);
+        });
+        _showInfoMessage("meal was favorited: ${meal.title}");
+      }
+    });
+
     Widget activePage = _selectedPageIndex == 0
         ? CategoriesScreen(
-            onToggleFavorite: _toggleMealFavoriteStatus,
             meals: availableMeals,
           )
         : MealsScreen(
             title: null,
-            meals: _favoriteMeals,
-            onToggleFavorite: _toggleMealFavoriteStatus,
+            meals: favoriteMeals,
           );
     String activePageTitle =
         _selectedPageIndex == 0 ? 'Categories' : 'Favorites';
