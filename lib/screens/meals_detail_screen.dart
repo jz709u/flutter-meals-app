@@ -7,8 +7,20 @@ import 'package:meals/providers/favorites_provider.dart';
 class MealsDetailScreen extends ConsumerWidget {
   const MealsDetailScreen({super.key, required this.meal});
   final Meal meal;
+
+  void _showInfoMessage(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealsProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -18,12 +30,24 @@ class MealsDetailScreen extends ConsumerWidget {
         forceMaterialTransparency: true,
         actions: [
           IconButton(
-              onPressed: () {
-                ref
-                    .read(favoriteMealsProvider.notifier)
-                    .toggleMealFavoriteStates(meal);
-              },
-              icon: Icon(Icons.star))
+            onPressed: () {
+              final result = ref
+                  .read(favoriteMealsProvider.notifier)
+                  .toggleMealFavoriteStates(meal);
+              _showInfoMessage(
+                result ? "favorite meal added" : "favorite meal removed",
+                context,
+              );
+            },
+            isSelected: favoriteMeals.contains(meal),
+            selectedIcon: Icon(
+              Icons.star,
+            ),
+            icon: Icon(
+              Icons.star_border,
+              color: Colors.white24,
+            ),
+          )
         ],
       ),
       extendBodyBehindAppBar: true,
