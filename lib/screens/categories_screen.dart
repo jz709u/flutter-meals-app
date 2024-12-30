@@ -6,13 +6,22 @@ import 'package:meals/widgets/category_grid_item.dart';
 import 'package:meals/models/category.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  CategoriesScreen({super.key, required this.meals});
-  List<Meal> meals = [];
+  const CategoriesScreen({super.key, required this.meals});
+  final List<Meal> meals;
 
   void _selectCategory(BuildContext context, Category category) {
     Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-      final xmeals = meals.where((meal) => meal.categories.contains(category.id)).toList();
-      return MealsScreen(title: category.title, meals: xmeals);
+      final xmeals = meals
+          .where(
+            (meal) => meal.categories.contains(
+              category.id,
+            ),
+          )
+          .toList();
+      return MealsScreen(
+        title: category.title,
+        meals: xmeals,
+      );
     }));
   }
 

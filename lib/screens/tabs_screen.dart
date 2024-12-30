@@ -6,7 +6,6 @@ import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
 import 'package:meals/widgets/drawer_item.dart';
 import 'package:meals/screens/screens.dart';
-import 'package:meals/providers/meals_provider.dart';
 import 'package:meals/providers/filters_provider.dart';
 
 const kInitialFilters = {
@@ -39,7 +38,9 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     switch (identifier) {
       case Screens.filter:
         await Navigator.of(context).push(
-          MaterialPageRoute(builder: (ctx) => FiltersScreen(),),
+          MaterialPageRoute(
+            builder: (ctx) => FiltersScreen(),
+          ),
         );
         break;
       case Screens.meal:
