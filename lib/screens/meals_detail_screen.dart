@@ -99,15 +99,25 @@ class MealsDetailScreen extends ConsumerWidget {
           const SizedBox(
             height: 14,
           ),
-          ...meal.steps.indexed.map((x) => Text(
-                '${x.$1 + 1} ${x.$2}',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(color: Theme.of(context).colorScheme.onSurface),
-              )),
+          ...indexMealsSteps(meal.steps, context),
         ],
       ),
     );
+  }
+
+  List<Widget> indexMealsSteps(List<String> steps, BuildContext context) {
+    List<String> titles = [];
+    steps
+      .asMap()
+      .forEach((index, value) {
+        titles += ["${index + 1} $value"];
+      });
+
+    return titles
+    .map((result) => Text(
+        result, 
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onSurface))
+    )
+    .toList();
   }
 }
