@@ -7,7 +7,7 @@ class FiltersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final filters = ref.watch(filtersProvider);
+    final filters = ref.watch(filtersNotifierProvider);
 
     final glutenFreeFilterSet = filters[Filters.glutenFree] ?? false;
     final lactoseFreeFilterSet = filters[Filters.lactoseFree] ?? false;
@@ -27,7 +27,7 @@ class FiltersScreen extends ConsumerWidget {
             context,
             (newValue) {
               ref
-                .read(filtersProvider.notifier)
+                .read(filtersNotifierProvider.notifier)
                 .setFilter(Filters.glutenFree, newValue);
             },
           ),
@@ -38,7 +38,7 @@ class FiltersScreen extends ConsumerWidget {
             context,
             (newValue) {
               ref
-                .read(filtersProvider.notifier)
+                .read(filtersNotifierProvider.notifier)
                 .setFilter(Filters.lactoseFree, newValue);
             },
           ),
@@ -49,7 +49,7 @@ class FiltersScreen extends ConsumerWidget {
             context,
             (newValue) {
               ref
-                .read(filtersProvider.notifier)
+                .read(filtersNotifierProvider.notifier)
                 .setFilter(Filters.vegetarian, newValue);
             },
           ),
@@ -60,7 +60,7 @@ class FiltersScreen extends ConsumerWidget {
             context,
             (newValue) {
               ref
-                .read(filtersProvider.notifier)
+                .read(filtersNotifierProvider.notifier)
                 .setFilter(Filters.vegan, newValue);
             },
           ),

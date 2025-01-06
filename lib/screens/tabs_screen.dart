@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meals/providers/favorites_provider.dart';
+import 'package:meals/providers/favorite_meals_provider.dart';
 import 'package:meals/screens/categories_screen.dart';
 import 'package:meals/screens/filters_screen.dart';
 import 'package:meals/screens/meals_screen.dart';
@@ -51,7 +51,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     final meals = ref.watch(filteredMealsProvider);
-    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final favoriteMeals = ref.watch(favoriteMealsNotifierProvider);
 
     Widget activePage = _selectedPageIndex == 0
         ? CategoriesScreen(

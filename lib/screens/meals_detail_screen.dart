@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals/models/meal.dart';
 import 'package:meals/widgets/meal_header_item.dart';
-import 'package:meals/providers/favorites_provider.dart';
+import 'package:meals/providers/favorite_meals_provider.dart';
 
 class MealsDetailScreen extends ConsumerWidget {
   const MealsDetailScreen({super.key, required this.meal});
@@ -19,7 +19,7 @@ class MealsDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final favoriteMeals = ref.watch(favoriteMealsProvider);
+    final favoriteMeals = ref.watch(favoriteMealsNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +32,7 @@ class MealsDetailScreen extends ConsumerWidget {
           IconButton(
             onPressed: () {
               final result = ref
-                  .read(favoriteMealsProvider.notifier)
+                  .read(favoriteMealsNotifierProvider.notifier)
                   .toggleMealFavoriteStates(meal);
               _showInfoMessage(
                 result ? "favorite meal added" : "favorite meal removed",
