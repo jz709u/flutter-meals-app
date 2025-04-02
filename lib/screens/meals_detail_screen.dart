@@ -10,11 +10,9 @@ class MealsDetailScreen extends ConsumerWidget {
 
   void _showInfoMessage(String message, BuildContext context) {
     ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -39,26 +37,28 @@ class MealsDetailScreen extends ConsumerWidget {
                 context,
               );
             },
-            isSelected: favoriteMeals.contains(meal),
-            selectedIcon: Icon(
-              Icons.star,
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) {
+                return ScaleTransition(
+                  scale: Tween(begin: 0.0, end: 1.0).animate(animation),
+                  child: child,
+                );
+              },
+              child: Icon(
+                favoriteMeals.contains(meal) ? Icons.star : Icons.star_border,
+                key: ValueKey(favoriteMeals.contains(meal)),
+              ),
             ),
-            icon: Icon(
-              Icons.star_border,
-              color: Colors.white24,
-            ),
-          )
+          ),
         ],
       ),
       extendBodyBehindAppBar: true,
       body: ListView(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         children: [
-          SizedBox(
-            height: 320,
-            child: MealHeaderItem(meal: meal),
-          ),
-          content(context)
+          SizedBox(height: 320, child: MealHeaderItem(meal: meal)),
+          content(context),
         ],
       ),
     );
@@ -73,32 +73,27 @@ class MealsDetailScreen extends ConsumerWidget {
           Text(
             "Ingrediants",
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 14),
           for (final ingrediant in meal.ingredients)
             Text(
               '- $ingrediant',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(color: Theme.of(context).colorScheme.onSurface),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 14),
           Text(
             "Steps",
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.bold),
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 14),
           ...indexMealsSteps(meal.steps, context),
         ],
       ),
@@ -107,17 +102,19 @@ class MealsDetailScreen extends ConsumerWidget {
 
   List<Widget> indexMealsSteps(List<String> steps, BuildContext context) {
     List<String> titles = [];
-    steps
-      .asMap()
-      .forEach((index, value) {
-        titles += ["${index + 1} $value"];
-      });
+    steps.asMap().forEach((index, value) {
+      titles += ["${index + 1} $value"];
+    });
 
     return titles
-    .map((result) => Text(
-        result, 
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Theme.of(context).colorScheme.onSurface))
-    )
-    .toList();
+        .map(
+          (result) => Text(
+            result,
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        )
+        .toList();
   }
 }

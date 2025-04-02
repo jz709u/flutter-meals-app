@@ -21,12 +21,15 @@ class MealHeaderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        FadeInImage(
-          placeholder: MemoryImage(kTransparentImage),
-          image: NetworkImage(meal.imageUrl),
-          fit: BoxFit.fitHeight,
-          height: double.infinity,
-          width: double.infinity,
+        Hero(
+          tag: meal.id,
+          child: FadeInImage(
+            placeholder: MemoryImage(kTransparentImage),
+            image: NetworkImage(meal.imageUrl),
+            fit: BoxFit.fitHeight,
+            height: double.infinity,
+            width: double.infinity,
+          ),
         ),
         Container(
           color: Colors.black38,
